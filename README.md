@@ -1,6 +1,6 @@
 ## Test Webapp 
 
-This is a simple [Goang](https://golang.org) based webapp.
+This is a simple [Golang](https://golang.org) based webapp.
 
 #### Build
 
