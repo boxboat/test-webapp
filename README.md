@@ -29,6 +29,7 @@ To see the running webapp:
 By default, the webapp will display a background image and the following message:
 
 `Welcome: Anonymous`
+
 `Time: <local date and time>`
 
 #### Parameters
