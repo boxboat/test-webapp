@@ -68,6 +68,7 @@ pipeline {
     post {
         failure {
             //mail to: 'todd@boxboat.com', subject: 'Pipeline failed', body: "${env.BUILD_URL}"
+            echo 'Failed...'
         }
     }
 }
