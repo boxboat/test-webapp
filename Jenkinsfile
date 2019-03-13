@@ -1,3 +1,6 @@
+@Library('jenkins-pipeline-library') _
+pipeline('golang')
+
 @Library('keysight-shared-library')_
 
 pipeline {

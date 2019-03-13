@@ -1,0 +1,7 @@
+type: golang
+runTests: true
+testCommand: pytest test.py
+deployUponTestSuccess: true
+deployToolImage: bash
+deployCommand: command goes here to deploy to
+deployEnvironment: staging
