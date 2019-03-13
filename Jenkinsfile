@@ -1,6 +1,6 @@
 @Library('keysight-shared-library')_
 
-//pipelineGolang()
+pipelineGolang()
 
-runPipeline()
-runPipeline("golang")
+// runPipeline()
+// runPipeline("golang")
