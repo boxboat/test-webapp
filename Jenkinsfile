@@ -3,3 +3,4 @@
 //pipelineGolang()
 
 runPipeline()
+runPipeline("golang")
