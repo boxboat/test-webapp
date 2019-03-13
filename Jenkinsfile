@@ -1,2 +1,2 @@
-@Library('keysight-shared-library') _
+@Library('keysight-shared-library')_
 pipeline()
