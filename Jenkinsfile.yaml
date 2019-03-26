@@ -5,3 +5,4 @@ deployUponTestSuccess: true
 deployToolImage: bash
 deployCommand: command goes here to deploy to
 deployEnvironment: staging
+test: test
