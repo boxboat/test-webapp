@@ -27,12 +27,7 @@ pipeline {
                 } 
             }
 
-            steps {
-                sh 'ls -al'
-                sh 'echo "UID: $UID"'
-                sh 'echo "CACHE: $XDG_CACHE_HOME"'
-                sh 'pwd'
-                sh 'env'                                          
+            steps {                                         
                 // Create our project directory.
                 sh 'cd ${GOPATH}/src'
                 sh 'mkdir -p ${GOPATH}/src/MY_PROJECT_DIRECTORY'
@@ -97,7 +92,7 @@ pipeline {
 
                         stage('Build image') {
                             docker.withRegistry('https://registry.hub.docker.com', 'docker-registry-credentials') {                                
-                                def customImage = docker.build( "toddbox/test-webapp:${env.BUILD_ID}" )
+                                def customImage = docker.build( "toddbox/test-webapp:1.${env.BUILD_ID}" )
                                 customImage.push()                          
                                 //app = docker.build("${env.DOCKER_CREDENTIALS_USR}/my-project-img")
                                 
