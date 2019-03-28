@@ -60,7 +60,7 @@ pipeline {
             // Use sonar-scanner.
             agent { 
                 docker { 
-                    image 'sonar-scanner'
+                    image 'boxboat/sonar-scanner'
                     args '-v ${WORKSPACE}:/root/src'
                 } 
             }
