@@ -22,8 +22,8 @@ pipeline {
                     image 'golang'
                     args '-u root --privileged' // needed for writing golang .cache
                     // failed to initialize build cache at /.cache/go-build: mkdir /.cache: permission denied
-                    registryUrl 'https://registry.az1'
-                    registryCredentialsId 'credentials-id'
+                    // registryUrl 'https://registry.az1'
+                    // registryCredentialsId 'credentials-id'
                 } 
             }
 
@@ -101,7 +101,7 @@ pipeline {
 
                         stage('Push image') {  
                             // Use the Credential ID of the Docker Hub Credentials we added to Jenkins.
-                            docker.withRegistry('https://registry.hub.docker.com', 'my-docker-credentials-id') {                                
+                            docker.withRegistry('https://registry.hub.docker.com', 'docker-registry-credentials') {                                
                                 // Push image and tag it with our build number for versioning purposes.
                                 app.push("${env.BUILD_NUMBER}")                      
 
