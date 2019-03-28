@@ -11,7 +11,7 @@ pipeline {
 
     // If anything fails, the whole Pipeline stops.
     stages {
-        stage('Build & Test') {   
+        stage('Build') {   
             // Use golang.
             agent { docker { image 'golang' } }
 
@@ -23,8 +23,8 @@ pipeline {
                 // Copy all files in our Jenkins workspace to our project directory.                
                 sh 'cp -r ${WORKSPACE}/* ${GOPATH}/src/MY_PROJECT_DIRECTORY'
 
-                // Copy all files in our "vendor" folder to our "src" folder.
-                sh 'cp -r ${WORKSPACE}/vendor/* ${GOPATH}/src'
+                // // Copy all files in our "vendor" folder to our "src" folder.
+                // sh 'cp -r ${WORKSPACE}/vendor/* ${GOPATH}/src'
 
                 // Build the app.
                 sh 'go build'               
