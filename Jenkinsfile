@@ -95,8 +95,11 @@ pipeline {
                             checkout scm
                         }
 
-                        stage('Build image') {                            
-                            app = docker.build("${env.DOCKER_CREDENTIALS_USR}/my-project-img")
+                        stage('Build image') {
+
+                            def customImage = docker.build( "toddbox/test-webapp:${env.BUILD_ID}" )
+                            customImage.push()                          
+                            //app = docker.build("${env.DOCKER_CREDENTIALS_USR}/my-project-img")
                         }
 
                         stage('Push image') {  
@@ -119,6 +122,16 @@ pipeline {
         always {
             // Clean up our workspace.
             deleteDir()
+        }
+        success {
+            slackSend channel:'#ops-room',
+            color: 'good',
+            message: 'Completed successfully.'
+        }
+        failure {
+            mail to: 'todd@boxboat.com',
+            subject: 'Failed Pipeline',
+            body: "Something is wrong"
         }
     }
 } 
