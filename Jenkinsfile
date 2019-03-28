@@ -96,22 +96,30 @@ pipeline {
                         }
 
                         stage('Build image') {
-
-                            def customImage = docker.build( "toddbox/test-webapp:${env.BUILD_ID}" )
-                            customImage.push()                          
-                            //app = docker.build("${env.DOCKER_CREDENTIALS_USR}/my-project-img")
-                        }
-
-                        stage('Push image') {  
-                            // Use the Credential ID of the Docker Hub Credentials we added to Jenkins.
                             docker.withRegistry('https://hub.docker.com', 'docker-registry-credentials') {                                
+                                def customImage = docker.build( "toddbox/test-webapp:${env.BUILD_ID}" )
+                                customImage.push()                          
+                                //app = docker.build("${env.DOCKER_CREDENTIALS_USR}/my-project-img")
+                                
                                 // Push image and tag it with our build number for versioning purposes.
-                                app.push( "toddbox/test-webapp:${env.BUILD_ID}" )                       
+                                //app.push( "toddbox/test-webapp:${env.BUILD_ID}" )                       
 
                                 // Push the same image and tag it as the latest version (appears at the top of our version list).
                                 //app.push("latest")
                             }
-                        }              
+
+                        }
+
+                        // stage('Push image') {  
+                        //     // Use the Credential ID of the Docker Hub Credentials we added to Jenkins.
+                        //     docker.withRegistry('https://hub.docker.com', 'docker-registry-credentials') {                                
+                        //         // Push image and tag it with our build number for versioning purposes.
+                        //         app.push( "toddbox/test-webapp:${env.BUILD_ID}" )                       
+
+                        //         // Push the same image and tag it as the latest version (appears at the top of our version list).
+                        //         //app.push("latest")
+                        //     }
+                        // }              
                     }                 
                 }
             }
