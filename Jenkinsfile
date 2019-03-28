@@ -42,19 +42,34 @@ pipeline {
                 sh 'go build'               
             }            
         }
-        stage('Sonarqube') {
-            environment {
-                scannerHome = tool 'SonarQubeScanner'
+        // stage('Sonarqube') {
+        //     environment {
+        //         scannerHome = tool 'SonarQubeScanner'
+        //     }
+        //     steps {
+        //         withSonarQubeEnv('sonarqube_server') {
+        //             sh "${scannerHome}/bin/sonar-scanner"
+        //         }
+        //         timeout(time: 1, unit: 'MINUTES') {
+        //             waitForQualityGate abortPipeline: true
+        //         }
+        //     }
+        // }
+
+        stage('Build') {   
+            // Use sonar-scanner.
+            agent { 
+                docker { 
+                    image 'sonar-scanner'
+                    args '-v ${WORKSPACE}:/root/src'
+                } 
             }
-            steps {
-                withSonarQubeEnv('sonarqube_server') {
-                    sh "${scannerHome}/bin/sonar-scanner"
-                }
-                timeout(time: 1, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
-                }
-            }
+
+            steps {                                         
+                echo "scanned?"
+            }            
         }
+
         stage('Test') {
             // Use golang.
             agent { 
