@@ -7,7 +7,11 @@
 
 pipeline {
     // Lets Jenkins use Docker for us later.
-    agent any    
+    agent any
+
+    environment{
+        
+    }
 
     // If anything fails, the whole Pipeline stops.
     stages {
@@ -16,7 +20,10 @@ pipeline {
             agent { 
                 docker { 
                     image 'golang'
-                    args '-u root --privileged'
+                    args '-u root --privileged' // needed for writing golang .cache
+                    // failed to initialize build cache at /.cache/go-build: mkdir /.cache: permission denied
+                    registryUrl 'https://registry.az1'
+                    registryCredentialsId 'credentials-id'
                 } 
             }
 
@@ -75,7 +82,7 @@ pipeline {
                 // (NOTE 1: DOCKER_CREDENTIALS will be set to "your_username:your_password".)
                 // The new variables will always be YOUR_VARIABLE_NAME + _USR and _PSW.
                 // (NOTE 2: You can't print credentials in the pipeline for security reasons.)
-                DOCKER_CREDENTIALS = credentials('my-docker-credentials-id')
+                DOCKER_CREDENTIALS = credentials('docker-registry-credentials')
             }
 
             steps {                           
