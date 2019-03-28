@@ -16,7 +16,7 @@ pipeline {
             agent { docker { image 'golang' } }
 
             steps {
-                sh 'whoami'
+                sh 'ls -al'
                 sh 'pwd'
                 sh 'env'                                          
                 // Create our project directory.
