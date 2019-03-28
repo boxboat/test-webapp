@@ -96,7 +96,7 @@ pipeline {
                         }
 
                         stage('Build image') {
-                            docker.withRegistry('https://hub.docker.com', 'docker-registry-credentials') {                                
+                            docker.withRegistry('docker.io', 'docker-registry-credentials') {                                
                                 def customImage = docker.build( "toddbox/test-webapp:${env.BUILD_ID}" )
                                 customImage.push()                          
                                 //app = docker.build("${env.DOCKER_CREDENTIALS_USR}/my-project-img")
