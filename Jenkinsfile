@@ -9,9 +9,9 @@ pipeline {
     // Lets Jenkins use Docker for us later.
     agent any
 
-    environment{
+    // environment{
         
-    }
+    // }
 
     // If anything fails, the whole Pipeline stops.
     stages {
