@@ -104,7 +104,7 @@ pipeline {
 
                         stage('Push image') {  
                             // Use the Credential ID of the Docker Hub Credentials we added to Jenkins.
-                            docker.withRegistry('https://registry.hub.docker.com', 'docker-registry-credentials') {                                
+                            docker.withRegistry('https://hub.docker.com', 'docker-registry-credentials') {                                
                                 // Push image and tag it with our build number for versioning purposes.
                                 app.push("${env.BUILD_NUMBER}")                      
 
@@ -123,15 +123,15 @@ pipeline {
             // Clean up our workspace.
             deleteDir()
         }
-        success {
-            slackSend channel:'#ops-room',
-            color: 'good',
-            message: 'Completed successfully.'
-        }
-        failure {
-            mail to: 'todd@boxboat.com',
-            subject: 'Failed Pipeline',
-            body: "Something is wrong"
-        }
+        // success {
+        //     slackSend channel:'#ops-room',
+        //     color: 'good',
+        //     message: 'Completed successfully.'
+        // }
+        // failure {
+        //     mail to: 'todd@boxboat.com',
+        //     subject: 'Failed Pipeline',
+        //     body: "Something is wrong"
+        // }
     }
 } 
