@@ -56,7 +56,7 @@ pipeline {
         //     }
         // }
 
-        stage('Build') {   
+        stage('Scan') {   
             // Use sonar-scanner.
             agent { 
                 docker { 
