@@ -17,6 +17,8 @@ pipeline {
 
             steps {
                 sh 'ls -al'
+                sh 'echo "UID: $UID"'
+                sh 'echo "CACHE: $XDG_CACHE_HOME"'
                 sh 'pwd'
                 sh 'env'                                          
                 // Create our project directory.
