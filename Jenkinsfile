@@ -13,7 +13,9 @@ pipeline {
     stages {
         stage('Build') {   
             // Use golang.
-            agent { docker { image 'golang' } }
+            agent { docker { image 'golang'
+                             args '-u root --privileged'
+                } }
 
             steps {
                 sh 'ls -al'
