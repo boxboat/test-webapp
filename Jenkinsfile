@@ -106,10 +106,10 @@ pipeline {
                             // Use the Credential ID of the Docker Hub Credentials we added to Jenkins.
                             docker.withRegistry('https://hub.docker.com', 'docker-registry-credentials') {                                
                                 // Push image and tag it with our build number for versioning purposes.
-                                app.push("${env.BUILD_NUMBER}")                      
+                                app.push( "toddbox/test-webapp:${env.BUILD_ID}" )                       
 
                                 // Push the same image and tag it as the latest version (appears at the top of our version list).
-                                app.push("latest")
+                                //app.push("latest")
                             }
                         }              
                     }                 
