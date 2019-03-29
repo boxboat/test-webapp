@@ -42,33 +42,18 @@ pipeline {
                 sh 'go build'               
             }            
         }
-        // stage('Sonarqube') {
-        //     environment {
-        //         scannerHome = tool 'SonarQubeScanner'
-        //     }
-        //     steps {
-        //         withSonarQubeEnv('sonarqube_server') {
-        //             sh "${scannerHome}/bin/sonar-scanner"
-        //         }
-        //         timeout(time: 1, unit: 'MINUTES') {
-        //             waitForQualityGate abortPipeline: true
-        //         }
-        //     }
-        // }
 
         stage('Scan') {   
-            // Use sonar-scanner. ./sonar-scanner/bin/sonar-scanner -Dsonar.projectBaseDir=./src //docker run -it --user 0:0 -v $(pwd):/root/src sonar-scanner ash
+            // Use sonar-scanner.
             agent { 
                 docker { 
                     image 'boxboat/sonar-scanner'
                     args '-it --user 0:0 -v ${WORKSPACE}:/root/src'
-                } 
+                }
             }
             steps {
-                sh 'ls -al'
-                sh 'sonar-scanner -Dsonar.projectBaseDir=.'                                         
-                echo "scanned !"
-            }            
+                sh 'sonar-scanner -Dsonar.projectBaseDir=.'
+            }
         }
 
         stage('Test') {
@@ -120,7 +105,7 @@ pipeline {
 
                         stage('Build image') {
                             docker.withRegistry('https://registry.hub.docker.com', 'docker-registry-credentials') {                                
-                                def customImage = docker.build( "toddbox/test-webapp:1.${env.BUILD_ID}" )
+                                def customImage = docker.build( "boxboat/test-webapp:1.${env.BUILD_ID}" )
                                 customImage.push()                          
                                 //app = docker.build("${env.DOCKER_CREDENTIALS_USR}/my-project-img")
                                 
