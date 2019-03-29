@@ -61,7 +61,7 @@ pipeline {
             agent { 
                 docker { 
                     image 'boxboat/sonar-scanner'
-                    args '-it --user 0:0 -v ${WORKSPACE}:/root/src ash'
+                    args '-it --user 0:0 -v ${WORKSPACE}:/root/src'
                 } 
             }
             steps {
