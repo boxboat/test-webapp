@@ -66,7 +66,7 @@ pipeline {
             }
             steps {
                 sh 'ls -al'
-                sh 'sonar-scanner -Dsonar.projectBaseDir=/root/src'                                         
+                sh 'sonar-scanner -Dsonar.projectBaseDir=.'                                         
                 echo "scanned !"
             }            
         }
