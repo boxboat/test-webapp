@@ -1,9 +1,38 @@
 #!/usr/bin/env groovy
 
+// The above line is used to trigger correct syntax highlighting.
+
 // @Library('keysight-shared-library')_
 // pipelineGolang()
 
-// The above line is used to trigger correct syntax highlighting.
+
+// # git, svn, cvs
+// checkout()
+
+// # PMD, CheckStyle, FindBugs
+// scan()
+
+// # java, C#, golang
+// build()
+
+// # sonarqube
+// test()
+
+// # docker, helm, pulp
+// package()
+
+// # coverity, checkmarx, fortify, etc.
+// secure()
+
+// # artifactory, git, pulp
+// publish()
+// kosiHub (keysight open source inside)
+// doxygen
+
+// # jenkins, ansible
+// deploy()
+
+
 
 pipeline {
     // Lets Jenkins use Docker for us later.
@@ -15,6 +44,21 @@ pipeline {
 
     // If anything fails, the whole Pipeline stops.
     stages {
+
+
+        stage('Scan') {   
+            // Use sonar-scanner.
+            agent { 
+                docker { 
+                    image 'boxboat/sonar-scanner'
+                    args '-it --user 0:0 -v ${WORKSPACE}:/root/src'
+                }
+            }
+            steps {
+                sh 'sonar-scanner -Dsonar.projectBaseDir=.'
+            }
+        }
+
         stage('Build') {   
             // Use golang.
             agent { 
@@ -41,19 +85,6 @@ pipeline {
                 // Build the app.
                 sh 'go build'               
             }            
-        }
-
-        stage('Scan') {   
-            // Use sonar-scanner.
-            agent { 
-                docker { 
-                    image 'boxboat/sonar-scanner'
-                    args '-it --user 0:0 -v ${WORKSPACE}:/root/src'
-                }
-            }
-            steps {
-                sh 'sonar-scanner -Dsonar.projectBaseDir=.'
-            }
         }
 
         stage('Test') {
@@ -93,43 +124,47 @@ pipeline {
                 DOCKER_CREDENTIALS = credentials('docker-registry-credentials')
             }
 
-            steps {                           
-                // Use a scripted pipeline.
-                script {
-                    node {
-                        def app
-
-                        stage('Clone repository') {
-                            checkout scm
-                        }
-
-                        stage('Build image') {
-                            docker.withRegistry('https://registry.hub.docker.com', 'docker-registry-credentials') {                                
-                                def customImage = docker.build( "boxboat/test-webapp:1.${env.BUILD_ID}" )
-                                customImage.push()                          
-                                //app = docker.build("${env.DOCKER_CREDENTIALS_USR}/my-project-img")
-                                
-                                // Push image and tag it with our build number for versioning purposes.
-                                //app.push( "toddbox/test-webapp:${env.BUILD_ID}" )                       
-
-                                // Push the same image and tag it as the latest version (appears at the top of our version list).
-                                //app.push("latest")
-                            }
-
-                        }
-
-                        // stage('Push image') {  
-                        //     // Use the Credential ID of the Docker Hub Credentials we added to Jenkins.
-                        //     docker.withRegistry('https://hub.docker.com', 'docker-registry-credentials') {                                
-                        //         // Push image and tag it with our build number for versioning purposes.
-                        //         app.push( "toddbox/test-webapp:${env.BUILD_ID}" )                       
-
-                        //         // Push the same image and tag it as the latest version (appears at the top of our version list).
-                        //         //app.push("latest")
-                        //     }
-                        // }              
-                    }                 
+            steps {
+                docker.withRegistry('https://registry.hub.docker.com', 'docker-registry-credentials') {                                
+                    def customImage = docker.build( "boxboat/test-webapp:1.${env.BUILD_ID}" )
+                    customImage.push()
                 }
+                // Use a scripted pipeline.
+                // script {
+                //     node {
+                //         def app
+
+                //         // stage('Clone repository') {
+                //         //     checkout scm
+                //         // }
+
+                //         stage('Build image') {
+                //             docker.withRegistry('https://registry.hub.docker.com', 'docker-registry-credentials') {                                
+                //                 def customImage = docker.build( "boxboat/test-webapp:1.${env.BUILD_ID}" )
+                //                 customImage.push()                          
+                //                 //app = docker.build("${env.DOCKER_CREDENTIALS_USR}/my-project-img")
+                                
+                //                 // Push image and tag it with our build number for versioning purposes.
+                //                 //app.push( "toddbox/test-webapp:${env.BUILD_ID}" )                       
+
+                //                 // Push the same image and tag it as the latest version (appears at the top of our version list).
+                //                 //app.push("latest")
+                //             }
+
+                //         }
+
+                //         // stage('Push image') {  
+                //         //     // Use the Credential ID of the Docker Hub Credentials we added to Jenkins.
+                //         //     docker.withRegistry('https://hub.docker.com', 'docker-registry-credentials') {                                
+                //         //         // Push image and tag it with our build number for versioning purposes.
+                //         //         app.push( "toddbox/test-webapp:${env.BUILD_ID}" )                       
+
+                //         //         // Push the same image and tag it as the latest version (appears at the top of our version list).
+                //         //         //app.push("latest")
+                //         //     }
+                //         // }              
+                //     }                 
+                // }
             }
         }
     }
