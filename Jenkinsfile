@@ -57,16 +57,16 @@ pipeline {
         // }
 
         stage('Scan') {   
-            // Use sonar-scanner.
+            // Use sonar-scanner. ./sonar-scanner/bin/sonar-scanner -Dsonar.projectBaseDir=./src //docker run -it --user 0:0 -v $(pwd):/root/src sonar-scanner ash
             agent { 
                 docker { 
                     image 'boxboat/sonar-scanner'
-                    args '-v ${WORKSPACE}:/root/src'
+                    args '-it --user 0:0 -v ${WORKSPACE}:/root/src ash'
                 } 
             }
-
-            steps {                                         
-                echo "scanned?"
+            steps {
+                sh './sonar-scanner/bin/sonar-scanner -Dsonar.projectBaseDir=./src'                                         
+                echo "scanned !"
             }            
         }
 
