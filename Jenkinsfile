@@ -115,7 +115,7 @@ pipeline {
             }
         }      
 
-        stage('Docker') {         
+        stage('Package') {         
             environment {
                 // Extract the username and password of our credentials into "DOCKER_CREDENTIALS_USR" and "DOCKER_CREDENTIALS_PSW".
                 // (NOTE 1: DOCKER_CREDENTIALS will be set to "your_username:your_password".)
@@ -135,30 +135,16 @@ pipeline {
                         // }
 
                         stage('Build image') {
-                            docker.withRegistry('https://registry.hub.docker.com', 'docker-registry-credentials') {                                
-                                def customImage = docker.build( "boxboat/test-webapp:1.${env.BUILD_ID}" )
-                                customImage.push()                          
-                                //app = docker.build("${env.DOCKER_CREDENTIALS_USR}/my-project-img")
-                                
-                                // Push image and tag it with our build number for versioning purposes.
-                                //app.push( "toddbox/test-webapp:${env.BUILD_ID}" )                       
-
-                                // Push the same image and tag it as the latest version (appears at the top of our version list).
-                                //app.push("latest")
-                            }
-
+                            def customImage = docker.build( "boxboat/test-webapp" )
                         }
 
-                        // stage('Push image') {  
-                        //     // Use the Credential ID of the Docker Hub Credentials we added to Jenkins.
-                        //     docker.withRegistry('https://hub.docker.com', 'docker-registry-credentials') {                                
-                        //         // Push image and tag it with our build number for versioning purposes.
-                        //         app.push( "toddbox/test-webapp:${env.BUILD_ID}" )                       
-
-                        //         // Push the same image and tag it as the latest version (appears at the top of our version list).
-                        //         //app.push("latest")
-                        //     }
-                        // }              
+                        stage('Push image') {  
+                            docker.withRegistry('https://registry.hub.docker.com', 'docker-registry-credentials') 
+                            {
+                                customImage.push( "1.${env.BUILD_ID}" )
+                                customImage.push( "latest" )
+                            }
+                        }            
                     }                 
                 }
             }
