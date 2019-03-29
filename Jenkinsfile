@@ -65,7 +65,7 @@ pipeline {
                 } 
             }
             steps {
-                sh './sonar-scanner/bin/sonar-scanner -Dsonar.projectBaseDir=./src'                                         
+                sh './sonar-scanner -Dsonar.projectBaseDir=./src'                                         
                 echo "scanned !"
             }            
         }
