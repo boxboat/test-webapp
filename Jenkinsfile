@@ -149,8 +149,9 @@ pipeline {
                             }
                         }
                         
-                        stage('Container Scan') {  
-                            aquaMicroscanner imageName: '', notCompliesCmd: 'exit 1', onDisallowed: 'fail'
+                        stage('Container Scan') {
+                            // onDisallowed: 'ignore' || 'fail'
+                            aquaMicroscanner imageName: '', notCompliesCmd: 'exit 1', onDisallowed: 'ignore'
                         }
                     }
                 }
