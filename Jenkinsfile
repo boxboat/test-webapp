@@ -176,6 +176,7 @@ pipeline {
             steps {                 
                 // Create our project directory.
                 sh 'build/deploy.sh'
+                sh 'build/deploy.sh'
             }
         }
 
