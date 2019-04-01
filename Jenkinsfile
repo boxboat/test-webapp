@@ -136,7 +136,7 @@ pipeline {
 
                         stage('Build image') {
                             def customImage = docker.build( "boxboat/test-webapp" )
-                            customImage.push( "1.${env.BUILD_ID}" )
+                            //customImage.push( "1.${env.BUILD_ID}" )
                             customImage.push( "latest" )
                         }
 
