@@ -169,6 +169,15 @@ pipeline {
             }
         }
 
+        stage('Deploy') {
+            // Use golang.
+            agent any
+
+            steps {                 
+                // Create our project directory.
+                sh 'build/deploy.sh'
+            }
+        }
 
     }
 
