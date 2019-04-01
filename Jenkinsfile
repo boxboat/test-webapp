@@ -148,6 +148,10 @@ pipeline {
                                 customImage.push( "latest" )
                             }
                         }
+                        
+                        stage('Container Scan') {  
+                            aquaMicroscanner imageName: '', notCompliesCmd: 'exit 1', onDisallowed: 'fail'
+                        }
                     }
                 }
             }
