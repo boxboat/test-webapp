@@ -161,9 +161,7 @@ pipeline {
 
         stage('Publish') {
             // Use golang.
-            agent { 
-
-            }
+            agent any
 
             steps {                 
                 // Create our project directory.
