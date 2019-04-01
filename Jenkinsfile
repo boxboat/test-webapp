@@ -151,7 +151,8 @@ pipeline {
                         
                         stage('Container Scan') {
                             // onDisallowed: 'ignore' || 'fail'
-                            aquaMicroscanner imageName: '', notCompliesCmd: 'exit 1', onDisallowed: 'ignore'
+                            //aquaMicroscanner imageName: 'boxboat/test-webapp', notCompliesCmd: 'exit 1', onDisallowed: 'ignore'
+                            aquaMicroscanner imageName: 'lizrice/struts:vulnerable', notCompliesCmd: 'exit 1', onDisallowed: 'ignore'
                         }
                     }
                 }
