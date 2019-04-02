@@ -69,7 +69,8 @@ pipeline {
                 }
             }
             steps {
-                slackSend color: 'good', message: 'Message from Jenkins Pipeline'
+                slackSend( channel: slackResponse.threadId, color: 'good', message: "Build: ${env.BUILD_ID}: Linting" )
+                //slackSend color: 'good', message: 'Message from Jenkins Pipeline'
                 sh 'sonar-scanner -Dsonar.projectBaseDir=.'
             }
         }
