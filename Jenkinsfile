@@ -71,12 +71,7 @@ pipeline {
                 }
             }
             steps {
-                script{
-                    //slack_response = slackSend( color: 'good', message: "Build: ${env.BUILD_ID}: Starting" )
-                    slackSend( channel: slack_response.threadId, color: 'good', message: "Build: ${env.BUILD_ID}: Linting" )
-                }
-                //slackSend( channel: slack_response.threadId, color: 'good', message: "Build: ${env.BUILD_ID}: Linting" )
-                //slackSend color: 'good', message: 'Message from Jenkins Pipeline'
+                slackSend color: 'good', message: "Build: ${env.BUILD_ID}: Linting"
                 sh 'sonar-scanner -Dsonar.projectBaseDir=.'
             }
         }
@@ -93,7 +88,9 @@ pipeline {
                 } 
             }
 
-            steps {                                         
+            steps {
+                slackSend color: 'good', message: "Build: ${env.BUILD_ID}: Building"
+
                 // Create our project directory.
                 sh 'cd ${GOPATH}/src'
                 sh 'mkdir -p ${GOPATH}/src/MY_PROJECT_DIRECTORY'
@@ -118,7 +115,9 @@ pipeline {
                 } 
             }
 
-            steps {                 
+            steps {
+                slackSend color: 'good', message: "Build: ${env.BUILD_ID}: Testing"
+
                 // Create our project directory.
                 sh 'cd ${GOPATH}/src'
                 sh 'mkdir -p ${GOPATH}/src/MY_PROJECT_DIRECTORY'
@@ -147,6 +146,8 @@ pipeline {
 
             steps {                           
                 // Use a scripted pipeline.
+                slackSend color: 'good', message: "Build: ${env.BUILD_ID}: Packaging"
+
                 script {
                     node {
                         def app
@@ -185,7 +186,8 @@ pipeline {
             // Use golang.
             agent any
 
-            steps {                 
+            steps {
+                slackSend color: 'good', message: "Build: ${env.BUILD_ID}: Publishing"
                 // Create our project directory.
                 sh 'build/publish.sh'          
             }
@@ -195,7 +197,8 @@ pipeline {
             // Use golang.
             agent any
 
-            steps {                 
+            steps {
+                slackSend color: 'good', message: "Build: ${env.BUILD_ID}: Deploying"
                 // Create our project directory.
                 sh 'build/deploy.sh'
                 sh 'build/deploy.sh'
@@ -209,15 +212,11 @@ pipeline {
             // Clean up our workspace.
             deleteDir()
         }
-        // success {
-        //     slackSend channel:'#ops-room',
-        //     color: 'good',
-        //     message: 'Completed successfully.'
-        // }
-        // failure {
-        //     mail to: 'todd@boxboat.com',
-        //     subject: 'Failed Pipeline',
-        //     body: "Something is wrong"
-        // }
+        success {
+            slackSend color: 'good', message: "Build: ${env.BUILD_ID}: Succeeded"
+        }
+        failure {
+            slackSend color: 'danger', message: "Build: ${env.BUILD_ID}: Failed"
+        }
     }
 } 
