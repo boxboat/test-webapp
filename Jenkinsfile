@@ -45,7 +45,7 @@ pipeline {
     // If anything fails, the whole Pipeline stops.
     stages {
 
-        slackSend color: 'good', message: 'Message from Jenkins Pipeline'
+        
 
         stage('Scan') {   
             // Use sonar-scanner.
@@ -56,6 +56,7 @@ pipeline {
                 }
             }
             steps {
+                slackSend color: 'good', message: 'Message from Jenkins Pipeline'
                 sh 'sonar-scanner -Dsonar.projectBaseDir=.'
             }
         }
