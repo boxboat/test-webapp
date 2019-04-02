@@ -32,10 +32,16 @@
 // # jenkins, ansible
 // deploy()
 
-
+def slack_response = ''
+def slack_channel = ''
 
 pipeline {
     // Lets Jenkins use Docker for us later.
+    parameters {
+        
+        string(name: 'slack_', defaultValue: '')
+    }
+    
     agent any
 
     // environment{
@@ -45,9 +51,16 @@ pipeline {
     // If anything fails, the whole Pipeline stops.
     stages {
 
-        
+        stage('Setup') {   
+            // Use sonar-scanner.
+            agent any
+            steps {
+                slack_response = slackSend( color: 'good', message: "Build: ${env.BUILD_ID}: Starting" )
+                // slackSend color: 'good', message: "Build: ${env.BUILD_ID}: Starting"
+            }
+        }
 
-        stage('Scan') {   
+        stage('Lint') {   
             // Use sonar-scanner.
             agent { 
                 docker { 
