@@ -55,7 +55,9 @@ pipeline {
             // Use sonar-scanner.
             agent any
             steps {
-                slack_response = slackSend( color: 'good', message: "Build: ${env.BUILD_ID}: Starting" )
+                script{
+                    slack_response = slackSend( color: 'good', message: "Build: ${env.BUILD_ID}: Starting" )
+                }
                 // slackSend color: 'good', message: "Build: ${env.BUILD_ID}: Starting"
             }
         }
@@ -69,7 +71,11 @@ pipeline {
                 }
             }
             steps {
-                slackSend( channel: slackResponse.threadId, color: 'good', message: "Build: ${env.BUILD_ID}: Linting" )
+                script{
+                    //slack_response = slackSend( color: 'good', message: "Build: ${env.BUILD_ID}: Starting" )
+                    slackSend( channel: slackResponse.threadId, color: 'good', message: "Build: ${env.BUILD_ID}: Linting" )
+                }
+                //slackSend( channel: slackResponse.threadId, color: 'good', message: "Build: ${env.BUILD_ID}: Linting" )
                 //slackSend color: 'good', message: 'Message from Jenkins Pipeline'
                 sh 'sonar-scanner -Dsonar.projectBaseDir=.'
             }
