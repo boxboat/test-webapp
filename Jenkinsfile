@@ -211,11 +211,15 @@ pipeline {
         always {
             // Clean up our workspace.
             deleteDir()
+            sendNotifications currentBuild.result
         }
         success {
             slackSend color: 'good', message: "Build: ${env.BUILD_ID}: Succeeded"
-        }
+            slackSend (color: 'good', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+
         failure {
+            slackSend (color: 'danger', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+
             slackSend color: 'danger', message: "Build: ${env.BUILD_ID}: Failed"
         }
     }
