@@ -3,6 +3,6 @@
 node {
 
   checkout scm
-
-  pipelineBuild();
+  
+  pipelineDefault();
 }
