@@ -1,8 +1,8 @@
-@Library('keysight-shared-library') _
+@Library('keysight-shared-library')_
 
 node {
 
   checkout scm
-  
-  pipelineDefault();
+
+  pipelineBuild();
 }
